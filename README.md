@@ -11,6 +11,22 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
+# Setting up development DB
+
+```sql
+-- STEP 1:
+-- Create Database dsps_dev, for development env.
+CREATE DATABASE dsps_dev;
+
+-- STEP 2:
+-- Create User dsps_dev_user with password dsps_dev_user
+CREATE USER dsps_dev_user WITH PASSWORD 'dsps_dev_user';
+
+-- STEP 3:
+-- Grant all privileges on database dsps_dev to user dsps_dev_user
+GRANT ALL PRIVILEGES ON DATABASE "dsps_dev" TO dsps_dev_user;
+```
+
 ## Learn more
 
   * Official website: http://www.phoenixframework.org/
