@@ -5,7 +5,7 @@ defmodule Dsps.User do
     field :email, :string
     field :username, :string
     field :password, :string
-
+    field :virtual_password, :string, virtual: true
     timestamps()
   end
 
@@ -14,9 +14,10 @@ defmodule Dsps.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:email, :username, :password])
-    |> validate_required([:email, :username, :password])
+    |> cast(params, [:email, :username, :virtual_password])
+    |> validate_required([:email, :username, :virtual_password])
     |> unique_constraint(:email)
+    |> validate_format(:email, ~r/@/)
     |> unique_constraint(:username)
   end
 end
