@@ -16,8 +16,12 @@ defmodule Dsps.Session do
         end
     end
 
-    def current_user(conn) do
+    def get_user_from_session(sessionID) do
         
+    end
+
+    def current_user(conn) do
+
     end
 
     def logged_in?(conn), do: !!current_user(conn)
