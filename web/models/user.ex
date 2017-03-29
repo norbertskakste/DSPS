@@ -16,8 +16,8 @@ defmodule Dsps.User do
     struct
     |> cast(params, [:email, :username, :virtual_password])
     |> validate_required([:email, :username, :virtual_password])
-    |> unique_constraint(:email)
-    |> validate_format(:email, ~r/@/)
-    |> unique_constraint(:username)
+    |> unique_constraint(:email, message: "Email already taken")
+    |> validate_format(:email, ~r/@/, message: "Invalid email")
+    |> unique_constraint(:username, message: "Username already taken")
   end
 end
