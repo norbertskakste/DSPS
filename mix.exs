@@ -40,7 +40,8 @@ defmodule Dsps.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 3.0"},
      {:exredis, ">= 0.2.4"},
-     {:poolboy,  github: "devinus/poolboy" , override: true}]
+     {:poolboy,  github: "devinus/poolboy" , override: true},
+     {:uuid, "~> 1.1" }]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

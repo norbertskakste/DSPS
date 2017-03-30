@@ -13,7 +13,7 @@ defmodule Dsps.RegistrationController do
         case Dsps.Registration.create(changeset, Dsps.Repo) do
             {:ok, changeset} ->
                 conn
-                |> put_session(:current_user, changeset.id)
+                |> Dsps.Session.set_user(changeset)
                 |> put_flash(:info, "Account registered")
                 |> redirect(to: "/")
             {:error, changeset} ->
