@@ -35,17 +35,22 @@ defmodule Dsps.Session do
             logged_in = Exredis.Api.hget(pid, sessionID, "logged_in")
             last_action = Exredis.Api.hget(pid, sessionID, "last_action")
             :poolboy.checkin(:redis_pool, pid)
-            if id do
-                user = Dsps.Repo.get(User, id)
-                %{
-                    user: user,
-                    session: %{
-                        id: id,
-                        logged_in: logged_in,
-                        last_action: last_action
+            case id do
+                :undefined ->
+                    false
+                _ ->
+                    action(conn)
+                    user = Dsps.Repo.get(User, id)
+                    %{
+                        user: user,
+                        session: %{
+                            id: id,
+                            logged_in: logged_in,
+                            last_action: last_action
+                        }
                     }
-                }
             end
+
         end
     end
 
@@ -55,7 +60,11 @@ defmodule Dsps.Session do
         if sessionID do
             time_now = Timex.now
             |> Timex.format!("%FT%T%:z", :strftime)
-            logged_in = Exredis.Api.hset(pid, sessionID, "last_action", time_now)
+            Exredis.query(pid, ["MULTI"])
+            Exredis.query(pid, ["HSET", sessionID, "last_action", time_now])
+            Exredis.query(pid, ["EXPIRE", sessionID, 60])
+            Exredis.query(pid, ["EXEC"])
+            Exredis.Api.hset(pid, sessionID, "last_action", time_now)
             :poolboy.checkin(:redis_pool, pid)
         end
     end
@@ -81,6 +90,7 @@ defmodule Dsps.Session do
         Exredis.query(pid, ["HSET", uuid, "id", user.id])
         Exredis.query(pid, ["HSET", uuid, "logged_in", time_now])
         Exredis.query(pid, ["HSET", uuid, "last_action", time_now])
+        Exredis.query(pid, ["EXPIRE", uuid, 60])
         Exredis.query(pid, ["EXEC"])
 
         :poolboy.checkin(:redis_pool, pid)

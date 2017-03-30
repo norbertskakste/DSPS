@@ -18,7 +18,7 @@
           <ul class="nav nav-pills pull-right">
             <%= if logged_in?(@conn) do %>
               <li><%= current_user(@conn).user.email %></li>
-              <li><%= logged_in_time(current_user(@conn).session.logged_in) %></li>
+              <li>Logged in for: <%= logged_in_time(current_user(@conn).session.logged_in) %></li>
               <li><%= link "Logout", to: session_path(@conn, :delete), method: :delete %></li>
             <% else %>
               <li><%= link "Login",    to: "/login" %></li>
