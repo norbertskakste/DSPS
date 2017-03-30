@@ -1,5 +1,6 @@
 defmodule Dsps.Session do
     import Exredis
+    use Timex
     alias Dsps.User
 
     def login(params, repo) do
@@ -31,20 +32,20 @@ defmodule Dsps.Session do
         sessionID = Plug.Conn.get_session(conn, :current_user)
         if sessionID do
             id = Exredis.Api.hget(pid, sessionID, "id")
+            logged_in = Exredis.Api.hget(pid, sessionID, "logged_in")
+            last_action = Exredis.Api.hget(pid, sessionID, "last_action")
             :poolboy.checkin(:redis_pool, pid)
             if id do
-                Dsps.Repo.get(User, id)
+                user = Dsps.Repo.get(User, id)
+                %{
+                    user: user,
+                    session: %{
+                        id: id,
+                        logged_in: logged_in,
+                        last_action: last_action
+                    }
+                }
             end
-        end
-    end
-
-    def logged_in_time(conn) do
-        pid = :poolboy.checkout(:redis_pool)
-        sessionID = Plug.Conn.get_session(conn, :current_user)
-        if sessionID do
-            logged_in = Exredis.Api.hget(pid, sessionID, "logged_in")
-            :poolboy.checkin(:redis_pool, pid)
-            logged_in
         end
     end
 
@@ -52,7 +53,9 @@ defmodule Dsps.Session do
         pid = :poolboy.checkout(:redis_pool)
         sessionID = Plug.Conn.get_session(conn, :current_user)
         if sessionID do
-            logged_in = Exredis.Api.hset(pid, sessionID, "last_action", DateTime.utc_now |> DateTime.to_string)
+            time_now = Timex.now
+            |> Timex.format!("%FT%T%:z", :strftime)
+            logged_in = Exredis.Api.hset(pid, sessionID, "last_action", time_now)
             :poolboy.checkin(:redis_pool, pid)
         end
     end
@@ -71,11 +74,13 @@ defmodule Dsps.Session do
 
     def set_user(conn, uuid, user) do
         pid = :poolboy.checkout(:redis_pool)
+        time_now = Timex.now
+        |> Timex.format!("%FT%T%:z", :strftime)
 
         Exredis.query(pid, ["MULTI"])
         Exredis.query(pid, ["HSET", uuid, "id", user.id])
-        Exredis.query(pid, ["HSET", uuid, "logged_in", DateTime.utc_now |> DateTime.to_string])
-        Exredis.query(pid, ["HSET", uuid, "last_action", DateTime.utc_now |> DateTime.to_string])
+        Exredis.query(pid, ["HSET", uuid, "logged_in", time_now])
+        Exredis.query(pid, ["HSET", uuid, "last_action", time_now])
         Exredis.query(pid, ["EXEC"])
 
         :poolboy.checkin(:redis_pool, pid)
