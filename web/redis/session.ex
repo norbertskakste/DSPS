@@ -20,25 +20,32 @@ defmodule Dsps.Redis.Session do
         end
     end
 
-    def new_redis_session(time_now, uuid, user_session = %UserSession{}) do
+    def new_redis_session(uuid, user_session = %UserSession{}) do
         :poolboy.transaction(:redis_pool, fn worker ->
             Exredis.query(worker, ["MULTI"])
             Exredis.query(worker, ["HSET", uuid, "id", user_session.id])
-            Exredis.query(worker, ["HSET", uuid, "logged_in", time_now])
-            Exredis.query(worker, ["HSET", uuid, "last_action", time_now])
+            Exredis.query(worker, ["HSET", uuid, "logged_in", user_session.logged_in])
+            Exredis.query(worker, ["HSET", uuid, "last_action", user_session.last_action])
             Exredis.query(worker, ["RPUSH", "user_sessions", uuid])
             Exredis.query(worker, ["EXPIRE", uuid, 60])
             Exredis.query(worker, ["EXEC"])
         end)
     end
 
+    def session_extend(uuid) do
+        :poolboy.transaction(:redis_pool, fn worker ->
+            time_now = Timex.now |> Timex.format!("%FT%T%:z", :strftime)
+            Exredis.query(worker, ["EXPIRE", uuid, 60])
+            Exredis.query(worker, ["HSET", uuid, "last_action", time_now])
+        end)
+    end
+
     def get_redis_session(uuid) do
         :poolboy.transaction(:redis_pool, fn worker ->
-            Exredis.query(worker, ["MULTI"])
             id = Exredis.query(worker, ["HGET", uuid, "id"])
             logged_in = Exredis.query(worker, ["HGET", uuid, "logged_in"])
             last_action = Exredis.query(worker, ["HGET", uuid, "last_action"])
-            Exredis.query(worker, ["EXEC"])
+            Exredis.query(worker, ["EXPIRE", uuid, 60])
             case id do
                 :undefined -> :undefined
                 _ -> UserSession.new_session(id, logged_in, last_action)
@@ -74,7 +81,7 @@ defmodule Dsps.Redis.Session do
     def delete_redis_session(uuid) do
         :poolboy.transaction(:redis_pool, fn worker ->
             Exredis.query(worker, ["MULTI"])
-            Exredis.query(worker, ["HDEL", uuid])
+            Exredis.query(worker, ["DEL", uuid])
             Exredis.query(worker, ["LREM", "user_sessions", 0, uuid])
             Exredis.query(worker, ["EXEC"])
         end)
@@ -93,6 +100,12 @@ defmodule Dsps.Redis.Session do
         end)
     end
 
+    def cleanup_session(uuid) do
+        :poolboy.transaction(:redis_pool, fn worker ->
+            Exredis.query(worker, ["LREM", "user_sessions", 0, uuid])
+        end)
+    end
+
     def session_expired?(user_session = %UserSession{}) do
         last_action = user_session.last_action
         |> Timex.parse!("%FT%T%:z", :strftime)
@@ -104,8 +117,16 @@ defmodule Dsps.Redis.Session do
         false
     end
 
+    def session_expire_seconds(uuid) when is_bitstring(uuid) do
+        :poolboy.transaction(:redis_pool, fn worker ->
+            last_action = Exredis.query(worker, ["HGET", uuid, "last_action"])
+            |> Timex.parse!("%FT%T%:z", :strftime)
+            Timex.Comparable.diff(Timex.now, last_action, :seconds)
+        end)
+    end
+
     def cleanup() do
-        sessions = get_redis_sessions(:expand)
+        sessions = get_redis_sessions(:tokens)
         |> Enum.map(fn session -> 
             if session_expired?(session) do
                 delete_redis_session(session)

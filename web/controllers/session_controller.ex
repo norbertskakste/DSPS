@@ -8,10 +8,8 @@ defmodule Dsps.SessionController do
     def create(conn, %{"session" => session_params}) do
         case Dsps.Session.login(session_params, Dsps.Repo) do
             {:ok, user} ->
-                uuid = UUID.uuid4 <> "." <> UUID.uuid1
                 conn
-                |> put_session(:current_user, uuid)
-                |> Dsps.Session.set_user(uuid, user)
+                |> Dsps.Session.create_session(user)
                 |> put_flash(:info, "Logged in")
                 |> redirect(to: "/")
             :error ->
@@ -23,7 +21,7 @@ defmodule Dsps.SessionController do
 
     def delete(conn, _) do
         conn
-        |> delete_session(:current_user)
+        |> Dsps.Session.delete_session
         |> put_flash(:info, "Logged out")
         |> redirect(to: "/")
     end

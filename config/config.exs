@@ -25,7 +25,7 @@ config :logger, :console,
 config :quantum, :your_app,
   cron: [
     # Every minute
-    "* * * * *": fn -> Dsps.Session.cleanup end
+    # "* * * * *": fn -> Dsps.Redis.Session.cleanup end
   ]
 
 # Import environment specific config. This must remain at the bottom

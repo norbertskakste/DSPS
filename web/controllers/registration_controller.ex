@@ -12,10 +12,8 @@ defmodule Dsps.RegistrationController do
 
         case Dsps.Registration.create(changeset, Dsps.Repo) do
             {:ok, changeset} ->
-                uuid = UUID.uuid4 <> "." <> UUID.uuid1
                 conn
-                |> put_session(:current_user, uuid)
-                |> Dsps.Session.set_user(uuid, changeset)
+                |> Dsps.Session.create_session(changeset)
                 |> put_flash(:info, "Account registered")
                 |> redirect(to: "/")
             {:error, changeset} ->

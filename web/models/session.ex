@@ -13,113 +13,49 @@ defmodule Dsps.Session do
 
     defp authenticate(user, password) do
         case user do
-            nil -> false
+            nil -> Comeonin.Bcrypt.dummy_checkpw
             _ -> Comeonin.Bcrypt.checkpw(password, user.password)
         end
     end
 
-    def get_user_from_session(sessionID) do
-        if sessionID do
-            id = Exredis.Api.get(sessionID)
-            if id do
-                Dsps.Repo.get(User, id)
-            end
-        end
+    def create_session(conn, user = %Dsps.User{}) do
+        session_data = Dsps.Redis.Session.UserSession.new_session(user)
+        uuid = UUID.uuid1 <> "." <> UUID.uuid4
+        Dsps.Redis.Session.new_redis_session(uuid, session_data)
+        conn
+        |> Plug.Conn.put_session(:user_session, uuid)
+    end
+
+    def delete_session(conn) do
+        Plug.Conn.get_session(conn, :user_session)
+        |> Dsps.Redis.Session.delete_redis_session
+        conn
+        |> Plug.Conn.delete_session(:user_session)
     end
 
     def current_user(conn) do
-        pid = :poolboy.checkout(:redis_pool)
-        sessionID = Plug.Conn.get_session(conn, :current_user)
-        if sessionID do
-            id = Exredis.Api.hget(pid, sessionID, "id")
-            logged_in = Exredis.Api.hget(pid, sessionID, "logged_in")
-            last_action = Exredis.Api.hget(pid, sessionID, "last_action")
-            :poolboy.checkin(:redis_pool, pid)
-            case id do
-                :undefined ->
-                    false
-                _ ->
-                    action(conn)
-                    user = Dsps.Repo.get(User, id)
-                    %{
-                        user: user,
-                        session: %{
-                            id: id,
-                            logged_in: logged_in,
-                            last_action: last_action
-                        }
-                    }
-            end
+        redis_session = Plug.Conn.get_session(conn, :user_session)
+        |> Dsps.Redis.Session.get_redis_session
 
-        end
+        Dsps.Redis.Session.session_extend(redis_session)
+
+        user_info = Dsps.Repo.get(User, redis_session.id)
+        %{
+            session: redis_session,
+            user: user_info
+        }
     end
 
-    def action(conn) do
-        pid = :poolboy.checkout(:redis_pool)
-        sessionID = Plug.Conn.get_session(conn, :current_user)
-        if sessionID do
-            time_now = Timex.now
-            |> Timex.format!("%FT%T%:z", :strftime)
-            Exredis.query(pid, ["MULTI"])
-            Exredis.query(pid, ["HSET", sessionID, "last_action", time_now])
-            Exredis.query(pid, ["EXPIRE", sessionID, 60])
-            Exredis.query(pid, ["EXEC"])
-            Exredis.Api.hset(pid, sessionID, "last_action", time_now)
-            :poolboy.checkin(:redis_pool, pid)
-        end
-    end
-
-    def last_action(conn) do
-        pid = :poolboy.checkout(:redis_pool)
-        sessionID = Plug.Conn.get_session(conn, :current_user)
-        if sessionID do
-            logged_in = Exredis.Api.hget(pid, sessionID, "last_action")
-            :poolboy.checkin(:redis_pool, pid)
-            logged_in
-        end
-    end
-
-    def logged_in?(conn), do: !!current_user(conn)
-
-    def set_user(conn, uuid, user) do
-        pid = :poolboy.checkout(:redis_pool)
-        time_now = Timex.now
-        |> Timex.format!("%FT%T%:z", :strftime)
-
-        Exredis.query(pid, ["MULTI"])
-        Exredis.query(pid, ["HSET", uuid, "id", user.id])
-        Exredis.query(pid, ["HSET", uuid, "logged_in", time_now])
-        Exredis.query(pid, ["HSET", uuid, "last_action", time_now])
-        Exredis.query(pid, ["RPUSH", "user_sessions", uuid])
-        Exredis.query(pid, ["EXPIRE", uuid, 60])
-        Exredis.query(pid, ["EXEC"])
-
-        :poolboy.checkin(:redis_pool, pid)
-        conn
-    end
-
-    def cleanup() do
-        pid = :poolboy.checkout(:redis_pool)
-        tokens = Exredis.query(pid, ["LRANGE", "user_sessions", 0, -1])
-        :poolboy.checkin(:redis_pool, pid)
-        case tokens do
-            :undefined -> false
-            _ ->
-                Enum.map(tokens, fn(token) ->
-                    pid = :poolboy.checkout(:redis_pool)
-                    last_action = Exredis.query(pid, ["HGET", token, "id"])
-                    case last_action do
-                        :undefined ->
-                            new_pid = :poolboy.checkout(:redis_pool)
-                            Exredis.query(pid, ["LREM", "user_sessions", 0, token])
-                            IO.puts(token)
-                            :poolboy.checkin(:redis_pool, new_pid)
-                        _ ->
-                            IO.puts(last_action)
-                    end
-                    :poolboy.checkin(:redis_pool, pid)
-                    end)
-
+    def logged_in?(conn) do
+        uuid = Plug.Conn.get_session(conn, :user_session)
+        cond do
+            !is_bitstring(uuid) -> false
+            true ->
+                redis_session = Dsps.Redis.Session.get_redis_session(uuid)
+                case redis_session do
+                    :undefined -> false
+                    _ -> true
+                end
         end
     end
 end

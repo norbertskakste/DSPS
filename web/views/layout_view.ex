@@ -3,7 +3,6 @@ defmodule Dsps.LayoutView do
   use Timex
 
   def logged_in_time(logged_in) do
-    logged_in
     date = Timex.parse!(logged_in, "%FT%T%:z", :strftime)
     Timex.Comparable.diff(Timex.now, date, :seconds)
   end
