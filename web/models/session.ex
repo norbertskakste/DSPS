@@ -90,10 +90,36 @@ defmodule Dsps.Session do
         Exredis.query(pid, ["HSET", uuid, "id", user.id])
         Exredis.query(pid, ["HSET", uuid, "logged_in", time_now])
         Exredis.query(pid, ["HSET", uuid, "last_action", time_now])
+        Exredis.query(pid, ["RPUSH", "user_sessions", uuid])
         Exredis.query(pid, ["EXPIRE", uuid, 60])
         Exredis.query(pid, ["EXEC"])
 
         :poolboy.checkin(:redis_pool, pid)
         conn
+    end
+
+    def cleanup() do
+        pid = :poolboy.checkout(:redis_pool)
+        tokens = Exredis.query(pid, ["LRANGE", "user_sessions", 0, -1])
+        :poolboy.checkin(:redis_pool, pid)
+        case tokens do
+            :undefined -> false
+            _ ->
+                Enum.map(tokens, fn(token) ->
+                    pid = :poolboy.checkout(:redis_pool)
+                    last_action = Exredis.query(pid, ["HGET", token, "id"])
+                    case last_action do
+                        :undefined ->
+                            new_pid = :poolboy.checkout(:redis_pool)
+                            Exredis.query(pid, ["LREM", "user_sessions", 0, token])
+                            IO.puts(token)
+                            :poolboy.checkin(:redis_pool, new_pid)
+                        _ ->
+                            IO.puts(last_action)
+                    end
+                    :poolboy.checkin(:redis_pool, pid)
+                    end)
+
+        end
     end
 end
