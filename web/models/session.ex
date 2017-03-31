@@ -37,7 +37,16 @@ defmodule Dsps.Session do
         redis_session = Plug.Conn.get_session(conn, :user_session)
         |> Dsps.Redis.Session.get_redis_session
 
-        Dsps.Redis.Session.session_extend(redis_session)
+        user_info = Dsps.Repo.get(User, redis_session.id)
+        %{
+            session: redis_session,
+            user: user_info
+        }
+    end
+
+    def current_user(conn, :silent) do
+        redis_session = Plug.Conn.get_session(conn, :user_session)
+        |> Dsps.Redis.Session.get_redis_session(:silent)
 
         user_info = Dsps.Repo.get(User, redis_session.id)
         %{

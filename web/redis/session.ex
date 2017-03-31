@@ -53,6 +53,18 @@ defmodule Dsps.Redis.Session do
         end)
     end
 
+    def get_redis_session(uuid, :silent) do
+        :poolboy.transaction(:redis_pool, fn worker ->
+            id = Exredis.query(worker, ["HGET", uuid, "id"])
+            logged_in = Exredis.query(worker, ["HGET", uuid, "logged_in"])
+            last_action = Exredis.query(worker, ["HGET", uuid, "last_action"])
+            case id do
+                :undefined -> :undefined
+                _ -> UserSession.new_session(id, logged_in, last_action)
+            end
+        end)
+    end
+
     def get_redis_sessions(:tokens, from, to) do
         :poolboy.transaction(:redis_pool, fn worker ->
             Exredis.query(worker, ["LRANGE", "user_sessions", from, to])
@@ -90,7 +102,12 @@ defmodule Dsps.Redis.Session do
     def session_expired?(uuid) when is_bitstring(uuid) do
         :poolboy.transaction(:redis_pool, fn worker ->
             last_action = Exredis.query(worker, ["HGET", uuid, "last_action"])
-            |> Timex.parse!("%FT%T%:z", :strftime)
+
+            case last_action do
+                :undefined -> true
+            end
+
+            Timex.parse!(last_action, "%FT%T%:z", :strftime)
             
             time = Timex.Comparable.diff(Timex.now, last_action, :seconds)
             if time > 60 do
@@ -126,7 +143,7 @@ defmodule Dsps.Redis.Session do
     end
 
     def cleanup() do
-        sessions = get_redis_sessions(:tokens)
+        get_redis_sessions(:tokens)
         |> Enum.map(fn session -> 
             if session_expired?(session) do
                 delete_redis_session(session)
