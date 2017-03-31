@@ -7,10 +7,15 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <label>Email</label>
-    <%= email_input f, :email, class: "form-control" %>
-    <%= error_tag f, :email %>
+  <div class="field">
+    <label class="label">Username</label>
+    <p class="control has-icon has-icon-right">
+      <%= email_input f, :email, class: "input" %>
+      <span class="icon is-small">
+        <i class="fa fa-check"></i>
+      </span>
+    </p>
+    <p class="help is-danger"><%= error_tag f, :email %></p>
   </div>
 
   <div class="form-group">

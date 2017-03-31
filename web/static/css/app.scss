@@ -1,0 +1,21 @@
+@import "bulma";
+
+.nav {
+    background-color: #1d1d1d;
+}
+
+.nav-item {
+    color: white;
+}
+
+.logo_text {
+    font-weight: bold;
+}
+
+.nav-item a, a.nav-item {
+    color: #cc6633;
+}
+
+.nav-item a:hover, a.nav-item:hover {
+    color: #da532c
+}

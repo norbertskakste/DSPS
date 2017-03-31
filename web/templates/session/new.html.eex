@@ -1,9 +1,11 @@
 <h2>Login</h2>
-
 <%= form_for @conn, session_path(@conn, :create), [name: :session], fn f -> %>
-  <div class="form-group">
-    <label>Username</label>
-    <%= text_input f, :username, class: "form-control" %>
+  <div class="field">
+    <label class="label">Username</label>
+    <p class="control has-icon has-icon-right">
+    <%= text_input f, :username, class: "input" %>
+    <p>
+    <p class="help is-danger"><%= error_tag f, :email %></p>
   </div>
 
   <div class="form-group">
