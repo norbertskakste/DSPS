@@ -27,7 +27,6 @@ defmodule Dsps.Session do
     end
 
     def delete_session(conn) do
-        IO.puts("DELETE")
         Plug.Conn.get_session(conn, :user_session)
         |> Dsps.Redis.Session.delete_redis_session
         conn
