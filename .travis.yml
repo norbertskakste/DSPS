@@ -7,6 +7,7 @@ sudo: false
 services:
   - redis-server
   - postgresql
+  - cassandra
 notifications:
   slack: dsp-s:rqHqJt1cm7hJXXqWTFvF7bdv
 before_script:
