@@ -12,3 +12,8 @@ notifications:
   slack: dsp-s:rqHqJt1cm7hJXXqWTFvF7bdv
 before_script:
   - psql -c 'create database dsps_travis_cl_test;' -U postgres
+before_install:
+  - wget https://www.apache.org/dyn/closer.cgi?path=/kafka/0.10.2.0/kafka-0.10.2.0-src.tgz -O kafka.tgz
+  - mkdir -p kafka && tar xzf kafka.tgz -C kafka --strip-components 1
+  - nohup bash -c "cd kafka && bin/zookeeper-server-start.sh config/zookeeper.properties &"
+  - nohup bash -c "cd kafka && bin/kafka-server-start.sh config/server.properties &"
