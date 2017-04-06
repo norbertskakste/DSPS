@@ -6,3 +6,5 @@ otp_release:
 sudo: false
 services:
   - redis-server
+notifications:
+  slack: eliksrs:AOOwhpzosJVFKtM7IJ1EdgFW
