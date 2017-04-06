@@ -7,4 +7,4 @@ sudo: false
 services:
   - redis-server
 notifications:
-  slack: eliksrs:AOOwhpzosJVFKtM7IJ1EdgFW
+  slack: dsp-s:rqHqJt1cm7hJXXqWTFvF7bdv
