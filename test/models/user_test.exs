@@ -3,7 +3,7 @@ defmodule Dsps.UserTest do
 
   alias Dsps.User
 
-  @valid_attrs %{email: "email@email.com", password: "securePassword", username: "niceUsername"}
+  @valid_attrs %{email: "email@email.com", password: "securePassword", username: "niceUsername", virtual_password: "niceVirtualPassword"}
   @invalid_attrs %{email "asdfsafadsf", password: "securePassword", username: "niceUsername"}
 
   test "changeset with valid attributes" do
