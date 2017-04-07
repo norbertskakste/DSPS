@@ -11,7 +11,9 @@ services:
 notifications:
   slack: dsp-s:rqHqJt1cm7hJXXqWTFvF7bdv
 before_script:
-  - psql -c 'create database dsps_travis_cl_test;' -U postgres
+  - psql -c 'create database dsps_travis_ci_test;' -U postgres
+env:
+  - MIX_ENV=travis
 branches:
   only:
   - master

@@ -26,6 +26,6 @@ config :dsps, Dsps.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "",
-  database: "dsps_dev_user",
+  database: "dsps_travis_ci_test",
   hostname: "localhost",
   pool_size: 3
