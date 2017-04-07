@@ -12,3 +12,8 @@ notifications:
   slack: dsp-s:rqHqJt1cm7hJXXqWTFvF7bdv
 before_script:
   - psql -c 'create database dsps_travis_cl_test;' -U postgres
+
+branches:
+  only:
+  - master
+  - develop
