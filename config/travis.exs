@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :dsps, Dsps.Repo,
   adapter: Ecto.Adapters.Postgres,
+  pool: Ecto.Adapters.SQL.Sandbox,
   username: "postgres",
   password: "",
   database: "dsps_travis_ci_test",
-  hostname: "localhost",
-  pool_size: 3
+  hostname: "localhost"
