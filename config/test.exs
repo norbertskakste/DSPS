@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :dsps, Dsps.Repo,
   adapter: Ecto.Adapters.Postgres,
   pool: Ecto.Adapters.SQL.Sandbox,
-  username: "postgres",
-  password: "",
-  database: "dsps_test_db",
+  username: "dsps_dev_user",
+  password: "dsps_dev_user",
+  database: "dsps_test",
   hostname: "localhost"
