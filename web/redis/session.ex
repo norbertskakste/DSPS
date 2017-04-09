@@ -155,4 +155,11 @@ defmodule Dsps.Redis.Session do
             end
         end)
     end
+
+    def cleanup_all() do
+        get_redis_sessions(:tokens)
+        |> Enum.map(fn session ->
+            delete_redis_session(session)
+        end)
+    end
 end
