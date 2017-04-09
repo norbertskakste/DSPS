@@ -9,7 +9,18 @@ defmodule Dsps.RedisTest.Session do
 
         assert Dsps.Redis.Session.get_redis_session("testUUID") != :undefined
 
-        assert Dsps.Redis.Session
+        Dsps.Redis.Session.cleanup_all
+    end
+
+    test "redis session creation [multiple]" do
+        user = Dsps.Redis.Session.UserSession.new_session(1)
+        Dsps.Redis.Session.new_redis_session("testUUID1", user)
+        Dsps.Redis.Session.new_redis_session("testUUID2", user)
+        Dsps.Redis.Session.new_redis_session("testUUID3", user)
+        Dsps.Redis.Session.new_redis_session("testUUID4", user)
+
+        assert Dsps.Redis.Session.get_redis_sessions
+        |> Kernel.length == 4
 
         Dsps.Redis.Session.cleanup_all
     end
@@ -23,4 +34,6 @@ defmodule Dsps.RedisTest.Session do
 
         Dsps.Redis.Session.cleanup_all
     end
+
+
 end
