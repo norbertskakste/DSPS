@@ -35,5 +35,34 @@ defmodule Dsps.RedisTest.Session do
         Dsps.Redis.Session.cleanup_all
     end
 
+    test "redis session deletion [multiple]" do
+        user = Dsps.Redis.Session.UserSession.new_session(1)
+        Dsps.Redis.Session.new_redis_session("testUUID1", user)
+        Dsps.Redis.Session.new_redis_session("testUUID2", user)
+        Dsps.Redis.Session.new_redis_session("testUUID3", user)
+        Dsps.Redis.Session.new_redis_session("testUUID4", user)
+
+        Dsps.Redis.Session.delete_redis_session("testUUID1")
+        Dsps.Redis.Session.delete_redis_session("testUUID2")
+        Dsps.Redis.Session.delete_redis_session("testUUID3")
+        Dsps.Redis.Session.delete_redis_session("testUUID4")
+
+        assert Dsps.Redis.Session.get_redis_sessions == :undefined
+
+        Dsps.Redis.Session.cleanup_all
+    end
+
+    test "redis session cleanup_all" do
+        user = Dsps.Redis.Session.UserSession.new_session(1)
+        Dsps.Redis.Session.new_redis_session("testUUID1", user)
+        Dsps.Redis.Session.new_redis_session("testUUID2", user)
+        Dsps.Redis.Session.new_redis_session("testUUID3", user)
+        Dsps.Redis.Session.new_redis_session("testUUID4", user)
+
+        Dsps.Redis.Session.cleanup_all
+
+        assert Dsps.Redis.Session.get_redis_sessions == :undefined
+
+    end
 
 end
