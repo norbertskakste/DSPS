@@ -47,7 +47,7 @@ defmodule Dsps.RedisTest.Session do
         Dsps.Redis.Session.delete_redis_session("testUUID3")
         Dsps.Redis.Session.delete_redis_session("testUUID4")
 
-        assert Dsps.Redis.Session.get_redis_sessions == |> Kernel.length == 0
+        assert Dsps.Redis.Session.get_redis_sessions |> Kernel.length == 0
 
         Dsps.Redis.Session.cleanup_all
     end
@@ -61,7 +61,7 @@ defmodule Dsps.RedisTest.Session do
 
         Dsps.Redis.Session.cleanup_all
 
-        assert Dsps.Redis.Session.get_redis_sessions == :undefined
+        assert Dsps.Redis.Session.get_redis_sessions |> Kernel.length == 0
 
     end
 
