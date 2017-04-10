@@ -1,19 +1,12 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Dsps.Repo.insert!(%Dsps.SomeModel{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
-
-#Primitive data type creation [datamodels]
-
 defmodule Dsps.Seeds.Datamodels do
 
+    @moduledoc """
+    Seeds the database with primitive Protobuf types
+    """
+
+    @doc """
+    Generates datamodels (normal and repeating)
+    """
     defp create_datamodels() do
         types = [:double, :float, :in32, :int64, :uint32, :uint64,
             :sint32, :sint64, :fixed32, :fixed64, :sfixed32,
@@ -43,6 +36,9 @@ defmodule Dsps.Seeds.Datamodels do
         normal_types ++ repeated_types
     end
 
+    @doc """
+    Generates and insert datamodels into database
+    """
     def insert_datamodels() do
         create_datamodels()
         |> Enum.each(fn datamodel ->
@@ -53,5 +49,3 @@ defmodule Dsps.Seeds.Datamodels do
     end
 
 end
-
-Dsps.Seeds.Datamodels.insert_datamodels()
