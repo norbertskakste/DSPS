@@ -67,21 +67,15 @@ defmodule Dsps.Redis.Session do
 
     def get_redis_sessions(:tokens, from, to) do
         :poolboy.transaction(:redis_pool, fn worker ->
-            case Exredis.query(worker, ["LRANGE", "user_sessions", from, to]) do
-                [] -> :undefined
-                _ ->
-            end
+            Exredis.query(worker, ["LRANGE", "user_sessions", from, to])
         end)
     end
 
     def get_redis_sessions(:expand, from, to) do
-        case get_redis_sessions(:tokens, from, to)
+        get_redis_sessions(:tokens, from, to)
         |> Enum.map(fn token ->
             get_redis_session(token)
-        end) do
-            [] -> :undefined
-            _ ->
-        end
+        end)
     end
 
     def get_redis_sessions(:tokens) do
