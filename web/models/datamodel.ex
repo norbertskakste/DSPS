@@ -17,5 +17,6 @@ defmodule Dsps.Datamodel do
     struct
     |> cast(params, [:name, :description, :primitive, :struct])
     |> validate_required([:name, :description, :primitive, :struct])
+    |> unique_constraint(:name, message: "Datamodel name already taken")
   end
 end
