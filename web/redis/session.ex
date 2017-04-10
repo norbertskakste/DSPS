@@ -69,6 +69,7 @@ defmodule Dsps.Redis.Session do
         :poolboy.transaction(:redis_pool, fn worker ->
             case Exredis.query(worker, ["LRANGE", "user_sessions", from, to]) do
                 [] -> :undefined
+                _ ->
             end
         end)
     end
@@ -79,6 +80,7 @@ defmodule Dsps.Redis.Session do
             get_redis_session(token)
         end) do
             [] -> :undefined
+            _ ->
         end
     end
 
