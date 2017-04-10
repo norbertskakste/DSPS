@@ -1,5 +1,4 @@
 defmodule Dsps.Seeds.Datamodels do
-
     @moduledoc """
     Seeds the database with primitive Protobuf types
     """
