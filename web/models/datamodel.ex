@@ -5,7 +5,7 @@ defmodule Dsps.Datamodel do
     field :name, :string
     field :description, :string
     field :primitive, :boolean, default: false
-    field :struct, :boolean, default: false
+    field :struct, :boolean, default: true
 
     timestamps()
   end
