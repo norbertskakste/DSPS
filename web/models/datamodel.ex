@@ -20,4 +20,5 @@ defmodule Dsps.Datamodel do
     |> validate_required([:name, :description, :primitive, :struct, :repeating])
     |> unique_constraint(:name, message: "Datamodel name already taken")
   end
+  
 end
