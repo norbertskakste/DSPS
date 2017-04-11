@@ -1,12 +1,7 @@
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-Master: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=master)](https://travis-ci.org/norbertskakste/DSPS)
-Develop: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=develop)](https://travis-ci.org/norbertskakste/DSPS)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=master)](https://travis-ci.org/norbertskakste/DSPS)
 
 # Dsps
-
 To start your Phoenix app:
-
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   * Install Node.js dependencies with `npm install`
@@ -16,7 +11,17 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
-# Setting up development DB
+
+## Builds
+
+* Master
+    * TravisCI: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=master)](https://travis-ci.org/norbertskakste/DSPS)
+* Develop
+    * TravisCI: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=develop)](https://travis-ci.org/norbertskakste/DSPS)
+* Experimental
+    * TravisCI: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=experimental)](https://travis-ci.org/norbertskakste/DSPS)
+
+## Setting up development DB
 
 ```sql
 -- STEP 1:
