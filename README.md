@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=master)](https://travis-ci.org/norbertskakste/DSPS)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=master)](https://travis-ci.org/norbertskakste/DSPS)[![Inline docs](http://inch-ci.org/github/norbertskakste/DSPS.svg?branch=master)](http://inch-ci.org/github/norbertskakste/DSPS)
 
 # Dsps
 To start your Phoenix app:
@@ -16,10 +16,13 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 * Master
     * TravisCI: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=master)](https://travis-ci.org/norbertskakste/DSPS)
+    * Inch-CI: [![Inline docs](http://inch-ci.org/github/norbertskakste/DSPS.svg?branch=master)](http://inch-ci.org/github/norbertskakste/DSPS)
 * Develop
     * TravisCI: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=develop)](https://travis-ci.org/norbertskakste/DSPS)
+    * Inch-CI: [![Inline docs](http://inch-ci.org/github/norbertskakste/DSPS.svg?branch=develop)](http://inch-ci.org/github/norbertskakste/DSPS)
 * Experimental
     * TravisCI: [![Build Status](https://travis-ci.org/norbertskakste/DSPS.svg?branch=experimental)](https://travis-ci.org/norbertskakste/DSPS)
+    * Inch-CI: [![Inline docs](http://inch-ci.org/github/norbertskakste/DSPS.svg?branch=experimental)](http://inch-ci.org/github/norbertskakste/DSPS)
 
 ## Setting up development DB
 
