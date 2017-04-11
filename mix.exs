@@ -43,7 +43,8 @@ defmodule Dsps.Mixfile do
      {:poolboy,  github: "devinus/poolboy" , override: true},
      {:uuid, "~> 1.1" },
      {:timex, "~> 3.0"},
-     {:quantum, ">= 1.9.1"}]
+     {:quantum, ">= 1.9.1"},
+     {:inch_ex, only: :docs}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
