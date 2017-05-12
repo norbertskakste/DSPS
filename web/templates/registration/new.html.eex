@@ -1,36 +1,43 @@
-<h1>Create an account</h1>
-
-<%= form_for @changeset, registration_path(@conn, :create), fn f -> %>
+<%= form_for @changeset, registration_path(@conn, :create), [class: "center"], fn f -> %>
   <%= if f.errors != [] do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below:</p>
+    <div class="row">
+      <p class="col-sm-12">Oops, something went wrong! Please check the errors below:</p>
     </div>
   <% end %>
+<fieldset>
+    <h1>Create an account</h1>
+    <div class="row">
+        <%= email_input f, :email, class: "sol-sm-12 col-md-3", placeholder: "Email" %>
+    </div>
 
-  <div class="field">
-    <label class="label">Username</label>
-    <p class="control has-icon has-icon-right">
-      <%= email_input f, :email, class: "input" %>
-      <span class="icon is-small">
-        <i class="fa fa-check"></i>
-      </span>
-    </p>
-    <p class="help is-danger"><%= error_tag f, :email %></p>
-  </div>
+    <div class="row">
+        <%= if error_tag f, :email do %>
+            <p><%= error_tag f, :email %></p>
+        <% end %>
+    </div>
 
-  <div class="form-group">
-    <label>Username</label>
-    <%= text_input f, :username, class: "form-control" %>
-    <%= error_tag f, :username %>
-  </div>
+    <div class="row">
+        <%= text_input f, :username, class: "col-sm-12 col-md-3", placeholder: "Username" %>
+    </div>
 
-  <div class="form-group">
-    <label>Password</label>
-    <%= password_input f, :virtual_password, class: "form-control" %>
-    <%= error_tag f, :virtual_password %>
-  </div>
+    <div class="row">
+        <%= if error_tag f, :username do %>
+            <p><%= error_tag f, :username %></p>
+        <% end %>
+    </div>
 
-  <div class="form-group">
-    <%= submit "Signup", class: "btn btn-primary" %>
-  </div>
+    <div class="row">
+        <%= password_input f, :virtual_password, class: "col-sm-12 col-md-3", placeholder: "Password" %>
+    </div>
+
+    <div class="row">
+        <%= if error_tag f, :username do %>
+            <p><%= error_tag f, :virtual_password %></p>
+        <% end %>
+    </div>
+
+    <div class="row">
+        <%= submit "Signup", class: "col-sm-12 col-md-3" %>
+    </div>
 <% end %>
+</fieldset>

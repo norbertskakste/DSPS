@@ -9,61 +9,36 @@
 
     <title>Hello Dsps!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-default.min.css">
   </head>
 
   <body>
-    <nav class="nav">
-  <div class="nav-left">
-    <a class="nav-item logo_text">
-      DSPS
-    </a>
-  </div>
-
-  <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
-  <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
-  <span class="nav-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
-  </span>
-
-  <!-- This "nav-menu" is hidden on mobile -->
-  <!-- Add the modifier "is-active" to display it on mobile -->
-  <div class="nav-right nav-menu">
-      <%= if @conn.assigns.is_logged_in do %>
-      <p class="nav-item">
-        <%= @conn.assigns.user_data.username %>
-      </p>
-      <p class="nav-item">
-        <%= @conn.assigns.user_data.email %>
-      </p>
-      <p class="nav-item">
-        <%= @conn.assigns.user_data.password %>
-      </p>
-      <p class="nav-item">
-        Sec: <%= logged_in_time(@conn.assigns.session_data.logged_in) %>
-      </p>
-      <%= link "Logout", to: session_path(@conn, :delete), method: :delete, class: "a-red", form: [class: "nav-item"] %>
-      <% else %>
-      <%= link "Login",    to: "/login", class: "nav-item" %>
-      <%= link "Register", to: registration_path(@conn, :new), class: "nav-item" %>
-      <% end %>
-  </div>
-</nav>
+  <header class="sticky">
+      <div class="right">
+          <%= if @conn.assigns.is_logged_in do %>
+              <a href="#" class="button"><%= @conn.assigns.user_data.username %></a>
+              <%= link "Logout", to: "/logout", method: :delete, form: [class: "button"] %>
+          <% else %>
+              <%= link "Login",    to: "/login", class: "button" %>
+              <%= link "Register", to: registration_path(@conn, :new), class: "button" %>
+          <% end %>
+      </div>
+  </header>
     <div class="container">
-      <header class="header">
-        <span class="logo"></span>
-      </header>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
+        <%= if get_flash(@conn, :info) do %>
+            <div class="alert urgent">
+                <p><%= get_flash(@conn, :info) %></p>
+            </div>
+        <% end %>
+        <%= if get_flash(@conn, :error) do %>
+            <div class="alert urgent">
+                <p><%= get_flash(@conn, :error) %></p>
+            </div>
+        <% end %>
       <main role="main">
-        <%= @conn.assigns.is_logged_in %>
         <%= render @view_module, @view_template, assigns %>
       </main>
-
-    </div> <!-- /container -->
+    </div>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

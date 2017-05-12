@@ -27,7 +27,7 @@ defmodule Dsps.Redis.Session do
             Exredis.query(worker, ["HSET", uuid, "logged_in", user_session.logged_in])
             Exredis.query(worker, ["HSET", uuid, "last_action", user_session.last_action])
             Exredis.query(worker, ["RPUSH", "user_sessions", uuid])
-            Exredis.query(worker, ["EXPIRE", uuid, 60])
+            Exredis.query(worker, ["EXPIRE", uuid, 900])
             Exredis.query(worker, ["EXEC"])
         end)
     end
@@ -35,7 +35,7 @@ defmodule Dsps.Redis.Session do
     def session_extend(uuid) do
         :poolboy.transaction(:redis_pool, fn worker ->
             time_now = Timex.now |> Timex.format!("%FT%T%:z", :strftime)
-            Exredis.query(worker, ["EXPIRE", uuid, 60])
+            Exredis.query(worker, ["EXPIRE", uuid, 900])
             Exredis.query(worker, ["HSET", uuid, "last_action", time_now])
         end)
     end
@@ -45,7 +45,7 @@ defmodule Dsps.Redis.Session do
             id = Exredis.query(worker, ["HGET", uuid, "id"])
             logged_in = Exredis.query(worker, ["HGET", uuid, "logged_in"])
             last_action = Exredis.query(worker, ["HGET", uuid, "last_action"])
-            Exredis.query(worker, ["EXPIRE", uuid, 60])
+            Exredis.query(worker, ["EXPIRE", uuid, 900])
             case id do
                 :undefined -> :undefined
                 _ -> UserSession.new_session(id, logged_in, last_action)
@@ -110,7 +110,7 @@ defmodule Dsps.Redis.Session do
             Timex.parse!(last_action, "%FT%T%:z", :strftime)
             
             time = Timex.Comparable.diff(Timex.now, last_action, :seconds)
-            if time > 60 do
+            if time > 900 do
                 true
             end
             false
@@ -133,7 +133,7 @@ defmodule Dsps.Redis.Session do
         |> Timex.parse!("%FT%T%:z", :strftime)
         
         time = Timex.Comparable.diff(Timex.now, last_action, :seconds)
-        if time > 60 do
+        if time > 900 do
             true
         end
         false

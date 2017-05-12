@@ -20,6 +20,7 @@ defmodule Dsps.SessionController do
     end
 
     def delete(conn, _) do
+        IO.puts("AYY")
         conn
         |> Dsps.Session.delete_session
         |> put_flash(:info, "Logged out")

@@ -1,21 +1,23 @@
-@import "bulma";
-
-.nav {
-    background-color: #1d1d1d;
+.button a{
+  text-decoration: none;
+  color: white !important;
 }
 
-.nav-item {
-    color: white;
+.center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
 }
 
-.logo_text {
-    font-weight: bold;
+.center * {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-.nav-item a, a.nav-item {
-    color: #cc6633;
+.left {
+  float: left !important;
 }
 
-.nav-item a:hover, a.nav-item:hover {
-    color: #da532c
+.right {
+  float: right !important;
 }
