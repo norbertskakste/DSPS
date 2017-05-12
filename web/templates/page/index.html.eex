@@ -3,8 +3,16 @@
       <div class="col-sm-12 col-md-3">
           <div class="card fluid">
               <div class="section">
-                  <h3>Servers</h3>
+                  <h3>Notes</h3>
               </div>
+              <%= for note <- @notes do %>
+              <div class="section">
+                  <h3><%= note.title %></h3>
+                  <p><small><%= note.body %></small></p>
+                  <%= link "Delete", to: note_path(@conn, :delete, note), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+              </div>
+              <% end %>
+              <%= link "New note", to: note_path(@conn, :new) %>
           </div>
       </div>
       <div class="col-sm-12 col-md-3">

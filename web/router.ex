@@ -20,7 +20,10 @@ defmodule Dsps.Router do
 
     get "/", PageController, :index
     resources "/register", RegistrationController, only: [:new, :create]
-    
+    resources "/notes", NoteController
+
+    resources "/primitives", PrimitiveController, only: [:index, :create]
+
     get "/login", SessionController, :new
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete

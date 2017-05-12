@@ -4,10 +4,10 @@ defmodule Dsps.Primitive do
   schema "primitives" do
     field :name, :string
     field :description, :string
-    field :max_value, :integer
-    field :min_value, :integer
-    field :max_length, :integer
-    field :min_length, :integer
+    field :max_value, :decimal
+    field :min_value, :decimal
+    field :max_length, :decimal
+    field :min_length, :decimal
     timestamps()
 
     has_many :stream_variables, Dsps.StreamVariable

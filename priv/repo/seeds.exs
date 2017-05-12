@@ -20,22 +20,32 @@ primitives = [
      },
      %Primitive{
          name: "integer",
-         description: "integer",
+         description: "Uses variable-length encoding. Signed int value.",
          min_value: -9223372036854775808,
          max_value: 9223372036854775807
      },
      %Primitive{
-          name: "float",
-          description: "float",
+          name: "double",
+          description: "floating point value (double)",
           min_value: -9223372036854775808,
           max_value: 9223372036854775807
       },
       %Primitive{
           name: "boolean",
-          description: "boolean",
+          description: "boolean value (true or false)",
           min_value: 0,
           max_value: 1
-      }
+      },
+      %Primitive{
+            name: "bytes",
+            description: "bytes"
+      },
+      %Primitive{
+              name: "unsigned_integer",
+              description: "Uses variable-length encoding",
+              min_value: 0,
+              max_value: 18446744073709551615
+       }
 ]
 
 primitives

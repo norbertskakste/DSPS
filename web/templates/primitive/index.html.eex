@@ -1,0 +1,40 @@
+<div class="row">
+<%= for primitive <- @primitives do %>
+    <div class="col-sm-12 col-md-3">
+        <div class="card fluid">
+            <div class="section center">
+                <h2><%= primitive.name %></h2>
+                <p><small><%= primitive.description %></small></p>
+            </div>
+            <div class="section">
+                <%= if primitive.min_value do %>
+                <p>Min value: <%= primitive.min_value %></p>
+                <% else %>
+                <p>Min value: None</p>
+                <% end %>
+            </div>
+            <div class="section">
+                <%= if primitive.max_value do %>
+                <p>Max value: <%= primitive.max_value %></p>
+                <% else %>
+                <p>Max value: None</p>
+                <% end %>
+            </div>
+            <div class="section">
+                <%= if primitive.min_length do %>
+                <p>Min length: <%= primitive.min_length %></p>
+                <% else %>
+                <p>Min length: None</p>
+                <% end %>
+            </div>
+            <div class="section">
+                <%= if primitive.max_length do %>
+                <p>Max length: <%= primitive.max_length %></p>
+                <% else %>
+                <p>Max length: None</p>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<% end %>
+</div>
