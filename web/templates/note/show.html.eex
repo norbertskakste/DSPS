@@ -1,0 +1,18 @@
+<h2>Show note</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @note.title %>
+  </li>
+
+  <li>
+    <strong>Body:</strong>
+    <%= @note.body %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: note_path(@conn, :edit, @note) %>
+<%= link "Back", to: note_path(@conn, :index) %>

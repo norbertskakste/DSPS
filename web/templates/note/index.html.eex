@@ -1,0 +1,28 @@
+<h2>Listing notes</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for note <- @notes do %>
+    <tr>
+      <td><%= note.title %></td>
+      <td><%= note.body %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: note_path(@conn, :show, note), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: note_path(@conn, :edit, note), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: note_path(@conn, :delete, note), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New note", to: note_path(@conn, :new) %>
