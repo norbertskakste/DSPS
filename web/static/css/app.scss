@@ -21,3 +21,37 @@
 .right {
   float: right !important;
 }
+
+.icon{
+  width: 3em;
+  height: auto;
+}
+
+.remove-borders > *{
+  border: 0 !important;
+}
+
+.remove-borders * {
+  border: 0 !important;
+}
+
+.remove-borders {
+  border: 0 !important;
+}
+
+.wrap-text {
+  -ms-word-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.wrap-text > * {
+  -ms-word-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.alert {
+  margin: 0.6rem;
+  padding: 0.3rem;
+  background-color: #e74c3c;
+  border: 1px solid black;
+}

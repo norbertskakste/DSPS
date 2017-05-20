@@ -19,7 +19,7 @@ defmodule Dsps.Mixfile do
   def application do
     [mod: {Dsps, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :exredis, :poolboy, :timex, :quantum]]
+                    :phoenix_ecto, :postgrex, :comeonin, :exredis, :poolboy, :timex, :quantum, :scrivener_ecto, :scrivener_html, :scrivener_headers, :rummage_phoenix]]
   end
 
   # Specifies which paths to compile per environment.
@@ -43,7 +43,11 @@ defmodule Dsps.Mixfile do
      {:poolboy,  github: "devinus/poolboy" , override: true},
      {:uuid, "~> 1.1" },
      {:timex, "~> 3.0"},
-     {:quantum, ">= 1.9.1"}]
+     {:quantum, ">= 1.9.1"},
+     {:scrivener_ecto, "~> 1.0"},
+     {:scrivener_html, "~> 1.7"},
+     {:scrivener_headers, "~> 3.0"},
+     {:rummage_phoenix, "~> 1.0.0", override: true}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

@@ -6,8 +6,6 @@ defmodule Dsps.Primitive do
     field :description, :string
     field :max_value, :decimal
     field :min_value, :decimal
-    field :max_length, :decimal
-    field :min_length, :decimal
     timestamps()
 
     has_many :stream_variables, Dsps.StreamVariable

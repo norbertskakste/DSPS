@@ -23,6 +23,7 @@ defmodule Dsps.Router do
     resources "/notes", NoteController
 
     resources "/primitives", PrimitiveController, only: [:index, :create]
+    resources "/streams", StreamController, only: [:index, :new, :create]
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create

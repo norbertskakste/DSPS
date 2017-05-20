@@ -1,0 +1,17 @@
+<%= sort_link @conn, @rummage, [field: :name] %>
+
+<%= search_form(@conn, @rummage, [fields:
+    [name: %{label: "Search by Name", search_type: "ilike"},
+description: %{label: "Search by description", search_type: "ilike"}], button_class: "btn"
+]) %>
+
+<%= for stream <- @streams do %>
+<div class="row">
+    <p><%= stream.name %></p>
+    <p><%= stream.description %></p>
+    <p><%= stream.realtime %></p>
+    <p><%= stream.enabled %></p>
+</div>
+<% end %>
+<%= pagination_link(@conn, @rummage) %>
+<%= link "New note", to: stream_path(@conn, :new) %>

@@ -1,5 +1,6 @@
 defmodule Dsps.Stream do
   use Dsps.Web, :model
+  use Rummage.Ecto
 
   schema "streams" do
     field :name, :string

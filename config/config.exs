@@ -28,6 +28,11 @@ config :quantum, :your_app,
     # "* * * * *": fn -> Dsps.Redis.Session.cleanup end
   ]
 
+config :rummage_phoenix,
+  Rummage.Phoenix,
+  default_per_page: 5
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
