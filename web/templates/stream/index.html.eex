@@ -11,6 +11,8 @@ description: %{label: "Search by description", search_type: "ilike"}], button_cl
     <p><%= stream.description %></p>
     <p><%= stream.realtime %></p>
     <p><%= stream.enabled %></p>
+    <p><%= link "Show", to: stream_path(@conn, :show, stream), class: "" %></p>
+    <%= link "Delete", to: stream_path(@conn, :delete, stream), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
 </div>
 <% end %>
 <%= pagination_link(@conn, @rummage) %>

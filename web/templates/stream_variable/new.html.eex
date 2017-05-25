@@ -1,0 +1,13 @@
+<%= form_for @stream_variable_changeset, stream_stream_variable_path(@conn, :create, @stream), fn f -> %>
+    <%= label f, :name, class: "control-label" %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+
+    <%= label f, :comment, class: "control-label" %>
+    <%= text_input f, :comment, class: "form-control" %>
+    <%= error_tag f, :comment %>
+
+    <%= select(f, :primitive_id, get_primitives()) %>
+
+    <%= submit "Submit", class: "btn btn-primary" %>
+<% end %>

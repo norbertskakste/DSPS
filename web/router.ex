@@ -23,7 +23,13 @@ defmodule Dsps.Router do
     resources "/notes", NoteController
 
     resources "/primitives", PrimitiveController, only: [:index, :create]
-    resources "/streams", StreamController, only: [:index, :new, :create]
+    resources "/streams", StreamController, only: [:delete, :create, :edit, :index, :new, :show, :update] do
+        resources "/variables", StreamVariableController, only: [:new, :create]
+        get "/finalize", StreamController, :finalize
+        get "/all_info", StreamController, :all_info
+    end
+
+    resources "/stream_graphs", StreamGraphController
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create

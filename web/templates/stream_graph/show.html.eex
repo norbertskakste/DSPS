@@ -1,0 +1,18 @@
+<h2>Show stream graph</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @stream_graph.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @stream_graph.description %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: stream_graph_path(@conn, :edit, @stream_graph) %>
+<%= link "Back", to: stream_graph_path(@conn, :index) %>

@@ -120,11 +120,6 @@ defmodule Dsps.Redis.Session do
     def cleanup_session(uuid) do
         :poolboy.transaction(:redis_pool, fn worker ->
             Exredis.query(worker, ["LREM", "user_sessions", 0, uuid])
-            IO.puts("Cleaned up session")
-            IO.puts("Cleaned up session")
-            IO.puts("Cleaned up session")
-            IO.puts("Cleaned up session")
-            IO.puts("Cleaned up session")
         end)
     end
 

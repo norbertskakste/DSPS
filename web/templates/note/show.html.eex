@@ -4,15 +4,12 @@
 
   <li>
     <strong>Title:</strong>
-    <%= @note.title %>
+    <%= @stream.title %>
   </li>
 
   <li>
     <strong>Body:</strong>
-    <%= @note.body %>
+    <%= @stream.body %>
   </li>
 
 </ul>
-
-<%= link "Edit", to: note_path(@conn, :edit, @note) %>
-<%= link "Back", to: note_path(@conn, :index) %>

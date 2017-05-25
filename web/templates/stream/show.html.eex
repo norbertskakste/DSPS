@@ -1,0 +1,25 @@
+<h2>Show Stream</h2>
+
+<ul>
+    <li>
+        <strong>Name:</strong>
+        <%= @stream.name %>
+    </li>
+
+    <li>
+        <strong>Description:</strong>
+        <%= @stream.description %>
+    </li>
+</ul>
+
+<p><%= link "Finalize", to: stream_stream_path(@conn, :finalize, @stream), class: "" %></p>
+
+<%= for variable <- @stream.stream_variables do %>
+<h1><%= variable.name %></h1>
+<h4><%= get_primitive(variable.primitive_id).name %></h4>
+<% end %>
+
+<%= render Dsps.StreamVariableView, "new.html",
+conn: @conn,
+stream: @stream,
+stream_variable_changeset: @stream_variable_changeset %>
