@@ -35,14 +35,7 @@
               <% end %>
           </div>
       </div>
-      <div class="col-sm-12 col-md-3">
-          <div class="card fluid">
-              <div class="section">
-                  <h3>Alerts</h3>
-              </div>
-          </div>
-      </div>
-      <div class="col-sm-12 col-md-6">
+      <div class="col-sm-12 col-md-9">
           <div class="card fluid bordered shadowed">
               <div class="section">
                   <h3>Streams</h3>

@@ -19,7 +19,7 @@ defmodule Dsps.Mixfile do
   def application do
     [mod: {Dsps, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :exredis, :poolboy, :timex, :quantum, :scrivener_ecto, :scrivener_html, :scrivener_headers, :rummage_phoenix, :elibuf]]
+                    :phoenix_ecto, :postgrex, :comeonin, :exredis, :poolboy, :timex, :quantum, :scrivener_ecto, :scrivener_html, :scrivener_headers, :rummage_phoenix, :elibuf, :mongodb]]
   end
 
   # Specifies which paths to compile per environment.
@@ -48,7 +48,8 @@ defmodule Dsps.Mixfile do
      {:scrivener_html, "~> 1.7"},
      {:scrivener_headers, "~> 3.0"},
      {:rummage_phoenix, "~> 1.0.0", override: true},
-     {:elibuf, "~> 0.1.0"}]
+     {:elibuf, "~> 0.1.0"},
+     {:mongodb, ">= 0.0.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

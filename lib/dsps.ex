@@ -12,7 +12,7 @@ defmodule Dsps do
       supervisor(Dsps.Repo, []),
       # Start the endpoint when the application starts
       supervisor(Dsps.Endpoint, []),
-      supervisor(Dsps.Exredis.Supervisor, [])
+      supervisor(Dsps.Exredis.Supervisor, []),
       # Start your own worker by calling: Dsps.Worker.start_link(arg1, arg2, arg3)
       # worker(Dsps.Worker, [arg1, arg2, arg3]),
     ]

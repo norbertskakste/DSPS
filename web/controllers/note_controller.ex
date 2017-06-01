@@ -5,6 +5,7 @@ defmodule Dsps.NoteController do
   alias Dsps.User
 
   def index(conn, _params) do
+
     notes = Repo.all(Note)
     |> Enum.map(fn (x) ->
         user = Repo.get(User, x.user_id)
