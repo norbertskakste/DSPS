@@ -1,0 +1,53 @@
+<h2>Show table</h2>
+
+
+    <strong>Name:</strong>
+    <%= @table.name %>
+
+    <strong>Stream:</strong>
+    <%= @table.stream_id %>
+<h1>Scheme table</h1>
+        <table class="table">
+  <thead>
+    <tr>
+      <%= for table_field <- get_specific_table_fields(@table) do %>
+      <th><%= table_field.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+<%= for table_data <- get_table_data(@table) do %>
+    <tr>
+      <%= for table_field <- get_specific_table_fields(@table) do %>
+      <td><%= table_data[table_field.name] %></td>
+      <% end %>
+    </tr>
+<% end %>
+  </tbody>
+  <% get_specific_table_fields(@table) %>
+</table>
+<h1>Raw table</h1>
+    <table class="table">
+  <thead>
+    <tr>
+      <%= for table_field <- get_table_fields(@table) do %>
+      <th><%= table_field %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+<%= for table_data <- get_table_data(@table) do %>
+    <tr>
+      <%= for table_field <- get_table_fields(@table) do %>
+      <td><%= table_data[table_field] %></td>
+      <% end %>
+    </tr>
+<% end %>
+  </tbody>
+  <% get_specific_table_fields(@table) %>
+</table>
+
+
+
+<%= link "Edit", to: table_path(@conn, :edit, @table) %>
+<%= link "Back", to: table_path(@conn, :index) %>

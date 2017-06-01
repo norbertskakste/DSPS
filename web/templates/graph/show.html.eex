@@ -1,0 +1,64 @@
+<h2>Show graph</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @graph.name %>
+  </li>
+
+  <li>
+    <strong>Stream:</strong>
+    <%= @graph.stream.name %>
+  </li>
+
+  <%= if(@graph.stream_variable) do %>
+  <li>
+    <strong>Stream:</strong>
+    <%= @graph.stream_variable.name %>
+  </li>
+  <% end %>
+<div style="width:400px;height:400px;maxWidth:400px;maxHeight:400px;">
+<canvas id="myChart" width="400" style="width:400px;height:400px;maxWidth:400px;maxHeight:400px;" height="400"></canvas>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+<script>
+function Get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;          
+}
+
+
+urlData = Get("/graphs/<%= @graph.id %>/data")
+
+realData = JSON.parse(urlData)
+console.log(realData)
+
+var ctx = document.getElementById("myChart").getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [{
+            label: "My First dataset",
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+        }]
+    },
+
+    // Configuration options go here
+    options: {}
+});
+</script>
+</ul>
+
+
+
+<%= link "Edit", to: graph_path(@conn, :edit, @graph) %>
+<%= link "Back", to: graph_path(@conn, :index) %>

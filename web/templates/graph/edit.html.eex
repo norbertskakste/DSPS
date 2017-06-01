@@ -1,0 +1,6 @@
+<h2>Edit graph</h2>
+
+<%= render "edit_form.html", changeset: @changeset,
+                        action: graph_path(@conn, :update, @graph) %>
+
+<%= link "Back", to: graph_path(@conn, :index) %>

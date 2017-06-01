@@ -15,6 +15,9 @@
   <body>
   <header class="sticky">
       <div class="right">
+          <%= link "Streams", to: stream_path(@conn, :index), class: "button" %>
+          <%= link "Tables", to: table_path(@conn, :index), class: "button" %>
+          <%= link "Graphs", to: graph_path(@conn, :index), class: "button" %>
           <%= if @conn.assigns.is_logged_in do %>
               <a href="#" class="button"><%= @conn.assigns.user_data.username %></a>
               <%= link "Logout", to: "/logout", method: :delete, form: [class: "button"] %>

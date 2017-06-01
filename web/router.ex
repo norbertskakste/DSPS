@@ -28,6 +28,10 @@ defmodule Dsps.Router do
         get "/finalize", StreamController, :finalize
         get "/all_info", StreamController, :all_info
     end
+    resources "/tables", TableController
+    resources "/graphs", GraphController do
+      get "/data", GraphController, :data
+    end
 
     resources "/stream_graphs", StreamGraphController
 

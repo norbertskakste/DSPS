@@ -1,0 +1,30 @@
+<h2>Listing graphs</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Stream</th>
+      <th>Stream variable</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for graph <- @graphs do %>
+    <tr>
+      <td><%= graph.name %></td>
+      <td><%= graph.stream_id %></td>
+      <td><%= graph.stream_variable_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: graph_path(@conn, :show, graph), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: graph_path(@conn, :edit, graph), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: graph_path(@conn, :delete, graph), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New graph", to: graph_path(@conn, :new) %>

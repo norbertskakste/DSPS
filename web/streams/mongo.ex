@@ -1,7 +1,5 @@
 defmodule Dsps.Streams.Mongo do
 
-    import Mongo
-
     def get_data_from_stream_id(id) do
         {:ok, mongo_pid} = Mongo.start_link(database: "dsps")
         data = mongo_pid
